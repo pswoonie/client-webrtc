@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'pages/detail/detail.dart';
+import 'pages/login/login.dart';
+import 'pages/room/room.dart';
 import 'pages/landing/landing.dart';
+import 'state/auth_state.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,22 +13,32 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
+  static final AuthState authController = AuthState();
+
   final GoRouter _router = GoRouter(
     routes: <RouteBase>[
       GoRoute(
         path: '/',
         builder: (BuildContext context, GoRouterState state) {
-          return const Landing();
+          return Login(authController: authController);
         },
         routes: <RouteBase>[
           GoRoute(
-            path: 'details',
+            path: 'landing',
             builder: (BuildContext context, GoRouterState state) {
-              return const Detail();
+              return Landing(authController: authController);
             },
+            routes: <RouteBase>[
+              GoRoute(
+                path: 'room',
+                builder: (BuildContext context, GoRouterState state) {
+                  return Room(authController: authController);
+                },
+              ),
+            ],
           ),
         ],
-      ),
+      )
     ],
   );
 

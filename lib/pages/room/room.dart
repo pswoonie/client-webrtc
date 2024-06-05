@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
-class Detail extends StatelessWidget {
-  const Detail({super.key});
+import '../../state/auth_state.dart';
+
+class Room extends StatelessWidget {
+  final AuthState authController;
+  const Room({super.key, required this.authController});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Detail'),
+        title: const Text('Room'),
       ),
       body: const SizedBox(),
     );
