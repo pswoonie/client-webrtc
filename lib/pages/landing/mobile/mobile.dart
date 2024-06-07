@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../state/auth_state.dart';
 import '../../../state/room_state.dart';
 import '../widgets/button_menu.dart';
 import '../widgets/room_card.dart';
-import '../functions/functions.dart';
+import '../mixin/function_mixin.dart';
 
 class Mobile extends StatefulWidget {
   final AuthState authController;
@@ -19,7 +20,7 @@ class Mobile extends StatefulWidget {
   State<Mobile> createState() => _MobileState();
 }
 
-class _MobileState extends State<Mobile> {
+class _MobileState extends State<Mobile> with Func {
   late RoomState roomController;
 
   @override
@@ -43,9 +44,9 @@ class _MobileState extends State<Mobile> {
             children: List.generate(2, (index) {
               return ButtonMenu(
                 index: index,
-                title: Func().getTitle(index),
+                title: getTitle(index),
                 onPressed: () {
-                  Func().handleOnPressed(index, roomController);
+                  handleOnPressed(index, roomController, context);
                 },
               );
             }),
@@ -67,6 +68,11 @@ class _MobileState extends State<Mobile> {
                         room: roomController.roomList[index],
                         onDelete: () {
                           roomController.removeRoom(index);
+                        },
+                        onJoin: () {
+                          roomController.setCurrentRoom(
+                              roomController.roomList[index].id);
+                          context.go('/landing/room');
                         },
                       );
                     },

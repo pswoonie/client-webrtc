@@ -7,18 +7,24 @@ import 'mobile/mobile.dart';
 
 class Landing extends StatefulWidget {
   final AuthState authController;
-  const Landing({super.key, required this.authController});
+  final RoomState roomController;
+  const Landing({
+    super.key,
+    required this.authController,
+    required this.roomController,
+  });
 
   @override
   State<Landing> createState() => _LandingState();
 }
 
 class _LandingState extends State<Landing> {
-  RoomState roomController = RoomState();
+  late RoomState roomController;
 
   @override
   void initState() {
     super.initState();
+    roomController = widget.roomController;
   }
 
   @override

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../state/auth_state.dart';
 import '../../../state/room_state.dart';
-import '../functions/functions.dart';
+import '../mixin/function_mixin.dart';
 import '../widgets/button_menu.dart';
 import '../widgets/room_card.dart';
 
@@ -19,7 +20,7 @@ class Browser extends StatefulWidget {
   State<Browser> createState() => _BrowserState();
 }
 
-class _BrowserState extends State<Browser> {
+class _BrowserState extends State<Browser> with Func {
   late RoomState roomController;
 
   @override
@@ -49,9 +50,9 @@ class _BrowserState extends State<Browser> {
                 itemBuilder: (context, index) {
                   return ButtonMenu(
                     index: index,
-                    title: Func().getTitle(index),
+                    title: getTitle(index),
                     onPressed: () {
-                      Func().handleOnPressed(index, roomController);
+                      handleOnPressed(index, roomController, context);
                     },
                   );
                 },
@@ -75,6 +76,11 @@ class _BrowserState extends State<Browser> {
                         room: roomController.roomList[index],
                         onDelete: () {
                           roomController.removeRoom(index);
+                        },
+                        onJoin: () {
+                          roomController.setCurrentRoom(
+                              roomController.roomList[index].id);
+                          context.go('/landing/room');
                         },
                       );
                     },

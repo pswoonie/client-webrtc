@@ -12,6 +12,9 @@ class RoomState with ChangeNotifier {
   final List<RoomModel> _roomList = [];
   List<RoomModel> get roomList => _roomList.toList();
 
+  RoomModel _curr = RoomModel(id: '', title: '');
+  RoomModel get curr => _curr;
+
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_random.nextInt(_chars.length))));
 
@@ -25,6 +28,12 @@ class RoomState with ChangeNotifier {
 
   void removeRoom(int index) {
     _roomList.removeAt(index);
+    notifyListeners();
+  }
+
+  void setCurrentRoom(String rid) {
+    var room = roomList.where((r) => r.id == rid).first;
+    _curr = room;
     notifyListeners();
   }
 }

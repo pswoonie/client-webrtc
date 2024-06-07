@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../model/room_model.dart';
 
@@ -7,11 +6,13 @@ class RoomCard extends StatelessWidget {
   final int index;
   final RoomModel room;
   final void Function() onDelete;
+  final void Function() onJoin;
   const RoomCard({
     super.key,
     required this.index,
     required this.room,
     required this.onDelete,
+    required this.onJoin,
   });
 
   @override
@@ -33,11 +34,24 @@ class RoomCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Center(
-                child: Text(
-                  room.title,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      fontSize: 50, fontWeight: FontWeight.bold),
+                child: SelectionArea(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        room.title,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        room.id,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -45,9 +59,7 @@ class RoomCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: () {
-                    context.go('/landing/room');
-                  },
+                  onPressed: onJoin,
                   child: const Text(
                     'JOIN',
                     style: TextStyle(color: Colors.white),

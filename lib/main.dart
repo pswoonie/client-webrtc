@@ -5,6 +5,7 @@ import 'pages/login/login.dart';
 import 'pages/room/room.dart';
 import 'pages/landing/landing.dart';
 import 'state/auth_state.dart';
+import 'state/room_state.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   static final AuthState authController = AuthState();
+  static final RoomState roomController = RoomState();
 
   final GoRouter _router = GoRouter(
     routes: <RouteBase>[
@@ -26,13 +28,17 @@ class MyApp extends StatelessWidget {
           GoRoute(
             path: 'landing',
             builder: (BuildContext context, GoRouterState state) {
-              return Landing(authController: authController);
+              return Landing(
+                  authController: authController,
+                  roomController: roomController);
             },
             routes: <RouteBase>[
               GoRoute(
                 path: 'room',
                 builder: (BuildContext context, GoRouterState state) {
-                  return Room(authController: authController);
+                  return Room(
+                      authController: authController,
+                      roomController: roomController);
                 },
               ),
             ],
