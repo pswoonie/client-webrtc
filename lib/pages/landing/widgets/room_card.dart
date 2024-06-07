@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../model/room_model.dart';
+import '../../../model/room_model.dart';
 
 class RoomCard extends StatelessWidget {
   final int index;

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../state/auth_state.dart';
 import '../../../state/room_state.dart';
-import 'widgets/button_menu.dart';
-import 'widgets/room_card.dart';
+import '../functions/functions.dart';
+import '../widgets/button_menu.dart';
+import '../widgets/room_card.dart';
 
 class Browser extends StatefulWidget {
   final AuthState authController;
@@ -27,32 +28,6 @@ class _BrowserState extends State<Browser> {
     roomController = widget.roomController;
   }
 
-  void handleOnPressed(int index) {
-    switch (index) {
-      case 1:
-        break;
-      case 2:
-        break;
-      case 3:
-        break;
-      default:
-        roomController.addNewRoom();
-    }
-  }
-
-  String getTitle(int index) {
-    switch (index) {
-      case 1:
-        return 'Menu1';
-      case 2:
-        return 'Menu2';
-      case 3:
-        return 'Menu3';
-      default:
-        return '';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,9 +49,9 @@ class _BrowserState extends State<Browser> {
                 itemBuilder: (context, index) {
                   return ButtonMenu(
                     index: index,
-                    title: getTitle(index),
+                    title: Func().getTitle(index),
                     onPressed: () {
-                      handleOnPressed(index);
+                      Func().handleOnPressed(index, roomController);
                     },
                   );
                 },
@@ -85,37 +60,28 @@ class _BrowserState extends State<Browser> {
           ),
         ),
       ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 950,
-            child: ScrollConfiguration(
-              behavior:
-                  ScrollConfiguration.of(context).copyWith(scrollbars: false),
-              child: SingleChildScrollView(
-                child: ListenableBuilder(
-                    listenable: roomController,
-                    builder: (context, child) {
-                      return Wrap(
-                        children: List.generate(
-                          roomController.roomList.length,
-                          (index) {
-                            return RoomCard(
-                              index: index,
-                              room: roomController.roomList[index],
-                              onDelete: () {
-                                roomController.removeRoom(index);
-                              },
-                            );
-                          },
-                        ),
+      body: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+        child: SingleChildScrollView(
+          child: ListenableBuilder(
+              listenable: roomController,
+              builder: (context, child) {
+                return Wrap(
+                  children: List.generate(
+                    roomController.roomList.length,
+                    (index) {
+                      return RoomCard(
+                        index: index,
+                        room: roomController.roomList[index],
+                        onDelete: () {
+                          roomController.removeRoom(index);
+                        },
                       );
-                    }),
-              ),
-            ),
-          ),
-        ],
+                    },
+                  ),
+                );
+              }),
+        ),
       ),
     );
   }
