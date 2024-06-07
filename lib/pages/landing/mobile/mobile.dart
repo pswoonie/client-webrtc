@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../../../state/auth_state.dart';
+import '../../../state/room_state.dart';
 
 class Mobile extends StatelessWidget {
   final AuthState authController;
-  const Mobile({super.key, required this.authController});
+  final RoomState roomController;
+  const Mobile({
+    super.key,
+    required this.authController,
+    required this.roomController,
+  });
 
   @override
   Widget build(BuildContext context) {

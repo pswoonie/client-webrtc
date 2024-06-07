@@ -1,12 +1,57 @@
 import 'package:flutter/material.dart';
 
 import '../../../state/auth_state.dart';
-import 'widgets/members.dart';
-import 'widgets/rooms.dart';
+import '../../../state/room_state.dart';
+import 'widgets/button_menu.dart';
+import 'widgets/room_card.dart';
 
-class Browser extends StatelessWidget {
+class Browser extends StatefulWidget {
   final AuthState authController;
-  const Browser({super.key, required this.authController});
+  final RoomState roomController;
+  const Browser({
+    super.key,
+    required this.authController,
+    required this.roomController,
+  });
+
+  @override
+  State<Browser> createState() => _BrowserState();
+}
+
+class _BrowserState extends State<Browser> {
+  late RoomState roomController;
+
+  @override
+  void initState() {
+    super.initState();
+    roomController = widget.roomController;
+  }
+
+  void handleOnPressed(int index) {
+    switch (index) {
+      case 1:
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+      default:
+        roomController.addNewRoom();
+    }
+  }
+
+  String getTitle(int index) {
+    switch (index) {
+      case 1:
+        return 'Menu1';
+      case 2:
+        return 'Menu2';
+      case 3:
+        return 'Menu3';
+      default:
+        return '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,23 +60,61 @@ class Browser extends StatelessWidget {
         elevation: 3,
         toolbarHeight: 70,
         automaticallyImplyLeading: false,
-        leadingWidth: 100,
-        leading: const Center(
-          child: Text(
-            'Room',
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-            ),
+        centerTitle: true,
+        title: SizedBox(
+          height: 60,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  return ButtonMenu(
+                    index: index,
+                    title: getTitle(index),
+                    onPressed: () {
+                      handleOnPressed(index);
+                    },
+                  );
+                },
+              ),
+            ],
           ),
         ),
-        centerTitle: true,
-        title: const Text('Browser'),
       ),
       body: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Rooms(),
-          Members(),
+          SizedBox(
+            width: 950,
+            child: ScrollConfiguration(
+              behavior:
+                  ScrollConfiguration.of(context).copyWith(scrollbars: false),
+              child: SingleChildScrollView(
+                child: ListenableBuilder(
+                    listenable: roomController,
+                    builder: (context, child) {
+                      return Wrap(
+                        children: List.generate(
+                          roomController.roomList.length,
+                          (index) {
+                            return RoomCard(
+                              index: index,
+                              room: roomController.roomList[index],
+                              onDelete: () {
+                                roomController.removeRoom(index);
+                              },
+                            );
+                          },
+                        ),
+                      );
+                    }),
+              ),
+            ),
+          ),
         ],
       ),
     );

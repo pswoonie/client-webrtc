@@ -30,8 +30,8 @@ class _LoginState extends State<Login> {
       ),
       body: Center(
         child: Container(
-          width: 500,
           padding: const EdgeInsets.symmetric(horizontal: 16),
+          constraints: const BoxConstraints(maxWidth: 500),
           child: Form(
             key: _formKey,
             child: Column(
