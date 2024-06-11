@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 import '../../state/auth_state.dart';
 import '../../state/room_state.dart';
@@ -39,7 +39,7 @@ class Room extends StatefulWidget {
 class _RoomState extends State<Room> {
   late RoomState roomController;
   StreamSocket streamSocket = StreamSocket();
-  late IO.Socket _socket;
+  late io.Socket _socket;
 
   MediaStream? _localStream;
 
@@ -66,26 +66,26 @@ class _RoomState extends State<Room> {
     // Socket
     // ============================================================
     if (kIsWeb) {
-      _socket = IO.io(
+      _socket = io.io(
         'http://localhost:3000',
-        IO.OptionBuilder()
+        io.OptionBuilder()
             .setTransports(['websocket'])
             .disableAutoConnect()
             .build(),
       );
     } else {
       if (Platform.isAndroid) {
-        _socket = IO.io(
+        _socket = io.io(
           'http://10.0.2.2:3000',
-          IO.OptionBuilder()
+          io.OptionBuilder()
               .setTransports(['websocket'])
               .disableAutoConnect()
               .build(),
         );
       } else if (Platform.isIOS) {
-        _socket = IO.io(
+        _socket = io.io(
           'http://127.0.0.1:3000',
-          IO.OptionBuilder()
+          io.OptionBuilder()
               .setTransports(['websocket'])
               .disableAutoConnect()
               .build(),
@@ -143,9 +143,8 @@ class _RoomState extends State<Room> {
         (candidate) => _rtcIceCandidates.add(candidate);
 
     _rtcPeerConnection!.onTrack = (event) {
-      for (MediaStream stream in event.streams) {
-        _remoteRTCVideoRenderer.srcObject = stream;
-      }
+      debugPrint('event: ${event.streams}');
+      _remoteRTCVideoRenderer.srcObject = event.streams[0];
       setState(() {});
     };
 
