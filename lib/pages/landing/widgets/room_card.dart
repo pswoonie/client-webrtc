@@ -28,7 +28,7 @@ class RoomCard extends StatelessWidget {
             Container(
               height: 140,
               width: 280,
-              margin: const EdgeInsets.all(8),
+              margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
               decoration: BoxDecoration(
                 color: Colors.deepPurple[200],
                 borderRadius: BorderRadius.circular(12),

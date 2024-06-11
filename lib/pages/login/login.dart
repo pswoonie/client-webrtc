@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../state/auth_state.dart';
 
@@ -19,6 +24,32 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
+    setPermissions();
+  }
+
+  void setPermissions() async {
+    if (kIsWeb) {
+      await navigator.mediaDevices.getUserMedia({
+        'audio': true,
+        'video': true,
+      });
+    } else {
+      if (Platform.isAndroid) {
+        debugPrint('Platform Android');
+        if (await Permission.camera.isDenied ||
+            await Permission.audio.isDenied ||
+            await Permission.microphone.isDenied) {
+          Map<Permission, PermissionStatus> status = await [
+            Permission.camera,
+            Permission.audio,
+            Permission.microphone
+          ].request();
+          debugPrint('camera: ${status[Permission.camera]}');
+          debugPrint('audio: ${status[Permission.audio]}');
+          debugPrint('microphone: ${status[Permission.microphone]}');
+        }
+      }
+    }
   }
 
   @override

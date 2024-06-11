@@ -13,7 +13,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-
   static final AuthState authController = AuthState();
   static final RoomState roomController = RoomState();
 

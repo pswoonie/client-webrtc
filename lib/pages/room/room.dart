@@ -371,29 +371,19 @@ class _RoomState extends State<Room> {
           ],
         ),
       ),
-      body: Row(
+      body: Column(
         children: [
-          // StreamBuilder(
-          //   stream: streamSocket.getResponse,
-          //   builder: (context, snapshot) {
-          //     if (snapshot.hasData) {
-          //       debugPrint('StreamBuilder: ${snapshot.data}');
-          //     }
-
-          //     return const SizedBox();
-          //   },
-          // ),
           Expanded(
             child: RTCVideoView(
               _localRTCVideoRenderer,
-              objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
+              objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitContain,
               mirror: true,
             ),
           ),
           Expanded(
             child: RTCVideoView(
-              _localRTCVideoRenderer,
-              objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
+              _remoteRTCVideoRenderer,
+              objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitContain,
               mirror: true,
             ),
           ),
